@@ -1,0 +1,21 @@
+{
+  "name": "backend_2_85635",
+  "version": "2.0.0",
+  "description": "Backend para la comision de alumnos #85635 de CoderHouse",
+  "license": "MIT",
+  "author": "Alejandro Di Stefano",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
