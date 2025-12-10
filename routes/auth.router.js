@@ -54,21 +54,21 @@ router.post('/logout', requireLogin, async (req, res, next) => {
 });
 
 router.get("/me", requireLogin, (req, res) => {
-    res.json({user: req.session.user})
+    res.json({ user: req.session.user })
 })
 
 
 // Estrategia de Github
-router.get("/github", passport.authenticate("github", { scope: ["user:email"]}));
-router.get("/sessions/github/callback", 
-    passport.authenticate("github", { failureRedirect: "/github/fail"}),
+router.get("/github", passport.authenticate("github", { scope: ["user:email"] }));
+router.get("/sessions/github/callback",
+    passport.authenticate("github", { failureRedirect: "/github/fail" }),
     (req, res) => {
         req.session.user = req.user;
-        res.json({ message: "Login Ok (GitHub)", user: req.user});
+        res.json({ message: "Login Ok (GitHub)", user: req.user });
     }
 );
 
-router.get("/github/fail", (req, res) => res.status(401).json({error: "Github Auth fallo"}));
+router.get("/github/fail", (req, res) => res.status(401).json({ error: "Github Auth fallo" }));
 
 /** JWT */
 router.post("/jwt/login", async (req, res) => {
