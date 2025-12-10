@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const baseMongooseOpts = {
+    serverSelectionTimeoutMS: 10000,
+}
 
 export const connectMongoDB = async () => {
     try{
-        await mongoose.connect('mongodb://127.0.0.1:27017/backend85635');
+        const url = process.env.MONGO_URL;
+        await mongoose.connect(url, baseMongooseOpts);
         console.log(`✅ Contectado a MongoDB de forma Exitosa.!!`)
     } catch(err){
         console.error(err);
@@ -12,10 +19,17 @@ export const connectMongoDB = async () => {
 
 export const connectAtlasMongoDB = async () => {
     try{
-        await mongoose.connect('mongodb+srv://aleddistefano:RKFlB0qXvqjqQm8z@codehouse.cfacxsr.mongodb.net/');
+        const url = process.env.MONGO_ATLAS_URL;
+        await mongoose.connect(url, baseMongooseOpts);
         console.log(`✅ Contectado a MongoAtlasDB de forma Exitosa.!!`)
     } catch(err){
         console.error(err);
         process.exit(1);
     }
+}
+
+export const connectAuto = async () => {
+    const target = (process.env.MONGO_TARGET || 'LOCAL').toUpperCase();
+    if(target === 'ATLAS') return connectAtlasMongoDB();
+    return connectMongoDB();
 }

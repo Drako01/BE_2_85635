@@ -6,26 +6,30 @@ import userRouter from './routes/user.router.js';
 import profileRouter from './routes/profile.router.js';
 
 
-import { connectMongoDB, connectAtlasMongoDB } from './config/db/connect.config.js';
+import { connectAuto } from './config/db/connect.config.js';
 
 import logger from './middleware/logger.middleware.js';
 
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 
 const app = express();
-const PORT = 3000;
-const ATLAS = false;
-const MONGO_URL = "mongodb://127.0.0.1:27017/backend85635";
+const PORT = process.env.PORT || 3000;
+const MONGO_URL = process.env.MONGO_URL;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 
 app.use(express.json());
 app.use(logger);
 
 app.use(
     session({
-        secret: 'clave_secreta',
+        secret: SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
@@ -48,7 +52,8 @@ app.use('/auth/profile', profileRouter);
 
 
 const startServer = async () => {
-    ATLAS ? connectAtlasMongoDB() : connectMongoDB();
+
+    await connectAuto();
     app.listen(PORT, ()=> console.log(`✅ Servidor escuchando en http://localhost:${PORT}`));
 }
 
