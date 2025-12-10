@@ -19,13 +19,12 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    githubid: {
-        type: String,
-    },
     password: {
         type: String,
-        // required: function () { return !this.githubid || false; }
-        required: false
+        required: function () { return !this.githubid; }
+    },
+    githubid: {
+        type: String,
     },
     role: {
         type: String,
